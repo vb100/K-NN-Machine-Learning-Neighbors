@@ -153,4 +153,4 @@ if __name__ == '__main__':
     df = loadFile('\\'.join([cwd, result[0]]), line)
     minorEDA(df, line)
     X, y = setFeatures('class', df, line)
-TestTrainFitPlot(X, y, line)
+    TestTrainFitPlot(X, y, line)
