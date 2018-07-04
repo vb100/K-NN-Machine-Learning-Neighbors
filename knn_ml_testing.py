@@ -53,12 +53,23 @@ def TestTrainFitPlot(X, y, line):
         from sklearn.preprocessing import Imputer
     
         print('{}\nCleaning data:'.format(line))
-        imp = Imputer(missing_values = 'NaN', strategy = 'mean', axis = 1)
+        imp = Imputer(missing_values = 'NaN', strategy = 'mean', axis = 0)
         imp.fit(X)
         
         X = imp.transform(X)
-        print('Cleaning is finished.\n{}'.format(line))
-        return X    
+        print('Cleaning is finished.')
+        return X  
+    
+    # Feature scaling
+    def featureScaling(X_train, X_test, line):
+        print('{}\nFeature scaling start.'.format(line))
+        from sklearn.preprocessing import StandardScaler
+        
+        sc = StandardScaler()
+        X_train = sc.fit_transform(X_train)
+        X_test = sc.fit_transform(X_test)
+        
+        return X_train, X_test
     
     # Plot the results
     def plotAccuracies(neighbors, train_accuracy, test_accuracy, line):
@@ -74,6 +85,8 @@ def TestTrainFitPlot(X, y, line):
             plt.text(a, b, str(round(b, 2)))
             
         plt.legend()
+        
+        plt.grid(which = 'major')
         
         plt.show()
         
@@ -91,6 +104,9 @@ def TestTrainFitPlot(X, y, line):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20,
                                                         random_state = 42,
                                                         stratify = y)
+    
+    # >> Feature Scaling
+    X_train, X_test = featureScaling(X_train, X_test, line)
     
     # >> Set the K-NN classifier
     knn = KNeighborsClassifier()
@@ -131,11 +147,11 @@ print('In total {} *.{} files found on the working directory:\n{}.\n'
       .format(len(result), extension, result))
 
 # Set the number of a file to be read in working directory
-number_of_file = 1
+number_of_file = 4
 line = '-' * 60
 
 if __name__ == '__main__':
     df = loadFile('\\'.join([cwd, result[0]]), line)
     minorEDA(df, line)
     X, y = setFeatures('class', df, line)
-    TestTrainFitPlot(X, y, line)
+TestTrainFitPlot(X, y, line)
