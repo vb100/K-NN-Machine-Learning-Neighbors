@@ -85,7 +85,6 @@ def TestTrainFitPlot(X, y, line):
             plt.text(a, b, str(round(b, 2)))
             
         plt.legend()
-        
         plt.grid(which = 'major')
         
         plt.show()
